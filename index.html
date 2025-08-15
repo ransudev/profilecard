@@ -1,1 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ransu</title>
+  <style>
+    /* Root variables for the black and white theme. */
+    :root {
+      --bg: #000;
+      --glass: rgba(0,0,0,.6);
+      --border: rgba(255,255,255,.1);
+      --muted: #a1a1aa; /* zinc-400 */
+      --muted-2: #d4d4d8; /* zinc-300 */
+      --white-5: rgba(255,255,255,.05);
+      --white-10: rgba(255,255,255,.1);
+      --white-15: rgba(255,255,255,.15);
+      --white-20: rgba(255,255,255,.2);
+      --pink: #ec4899;
+    }
+    
+    /* Basic reset and body styles */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; 
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: #fff; 
+      background: var(--bg); 
+      overflow: hidden;
+    }
+    
+    /* Main wrapper for centering and 3D perspective */
+    .wrap { 
+      min-height: 100dvh; 
+      display: grid; 
+      place-items: center; 
+      padding: 24px; 
+      position: relative; 
+      perspective: 1000px; 
+    }
+
+    /* Snow animation keyframes and container styles */
+    @keyframes fall { 
+      0%{ transform: translateY(-10px); } 
+      100%{ transform: translateY(110vh);} 
+    }
+    .snow { 
+      position: absolute; 
+      inset: 0; 
+      pointer-events: none; 
+      overflow: hidden; 
+    }
+    .flake { 
+      position: absolute; 
+      background: #fff; /* White flakes */
+      border-radius: 999px; 
+      opacity: .9; 
+    }
+
+    /* Main card styles with 3D transform properties */
+    .card {
+      width: min(720px, 92vw);
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 25px -5px rgba(255,255,255,.2);
+      transform-style: preserve-3d;
+      transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--scale,1));
+      transition: transform .2s ease;
+    }
+    
+    /* Top section of the card */
+    .top { 
+      display:flex; 
+      justify-content: space-between; 
+      color: var(--muted-2); 
+      font-size: 14px; 
+    }
+    
+    /* Profile section styles */
+    .avatar { 
+      width: 96px; 
+      height: 96px; 
+      border-radius: 999px; 
+      object-fit: cover; 
+      border: 4px solid var(--border); 
+      box-shadow: 0 10px 20px rgba(0,0,0,.4); 
+    }
+    .badge { 
+      position:absolute; 
+      right:-6px; 
+      bottom:-6px; 
+      width: 20px; 
+      height:20px; 
+      border-radius:999px; 
+      display:grid;
+      place-items:center; 
+      background:var(--pink); 
+      color:#fff; 
+      font-size:10px; 
+      box-shadow: 0 6px 16px rgba(236,72,153,.6); 
+    }
+    .center { 
+      display:grid; 
+      place-items:center; 
+      gap: 8px; 
+      margin-top: 20px; 
+      text-align: center;
+    }
+    .name { 
+      font-weight:800; 
+      letter-spacing:.5px; 
+      font-size: 32px; 
+      text-transform: lowercase; 
+    }
+    .muted { 
+      color: var(--muted); 
+      font-size: 14px; 
+      margin-top: 4px;
+    }
+
+    /* Social links row */
+    .links { 
+      display:flex; 
+      gap:16px; 
+      justify-content:center; 
+      margin: 20px auto; 
+      max-width: 520px; 
+    }
+    .pill { 
+      width:48px; 
+      height:48px; 
+      display:grid; 
+      place-items:center; 
+      border-radius:999px; 
+      border:1px solid var(--border); 
+      background: var(--white-5); 
+      box-shadow: 0 8px 24px rgba(0,0,0,.4); 
+      transition: transform .2s ease, background .2s ease, border-color .2s ease; 
+      position:relative; 
+    }
+    .pill:hover { 
+      transform: scale(1.05); 
+      background: var(--white-10); 
+      border-color: var(--white-20); 
+    }
+    .tooltip { 
+      position:absolute; 
+      bottom:100%; 
+      transform-origin: bottom; 
+      transform: scale(0); 
+      transition: transform .15s ease; 
+      background: rgba(255,255,255,.9); 
+      color: #000;
+      padding:6px 8px; 
+      border-radius:6px; 
+      font-size:12px; 
+      white-space:nowrap; 
+      margin-bottom:8px; 
+    }
+    .pill:hover .tooltip { transform: scale(1); }
+    
+    /* Basic icon style */
+    .icon { 
+      width:24px; 
+      height:24px; 
+      fill: currentColor; 
+      color: var(--muted-2); 
+    }
+  </style>
+</head>
+<body>
+  <div class="snow" id="snow"></div>
+
+  <main class="wrap" id="page">
+    <section class="card" id="card" aria-label="Profile card">
+      <div class="top"><span>© 2069</span></div>
+
+      <div class="center">
+        <div style="position:relative">
+          <img class="avatar" src="profile.png" alt="avatar" />
+          <span class="badge">
+             <svg class="icon" style="width:12px; height:12px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+          </span>
+        </div>
+        <div class="name">ransu</div>
+        <div class="muted">he/him</div>
+        <div class="muted">2006</div>
+      </div>
+
+      <div class="links">
+        <a class="pill" href="https://steamcommunity.com/profiles/76561198302918958/" target="_blank" rel="noreferrer">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M15 7.5V2H9v5.5l3 3 3-3zM7.5 9H2v6h5.5l3-3-3-3zm9 0l-3 3 3 3H22V9h-5.5zM12 13.5l-3 3H9v5.5h6V16.5l-3-3z"/></svg>
+          <span class="tooltip">steam</span>
+        </a>
+        <a class="pill" href="#" aria-label="discord">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <span class="tooltip">ransuog</span>
+        </a>
+        <a class="pill" href="https://open.spotify.com/user/31taqdowr6gc3z5psrattdjt24ny?si=b6e88f91158b46c0" target="_blank" rel="noreferrer">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+          <span class="tooltip">spotify</span>
+        </a>
+        <a class="pill" href="https://ljamaiso.github.io/portfolio/#home" aria-label="portfolio">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1h-2v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            <span class="tooltip">portfolio</span>
+        </a>
+        <a class="pill" href="#" aria-label="wallet">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+            <span class="tooltip">ltc: LbciSGqkBunLFhpd5EAu9nBdXfGApwYugm</span>
+        </a>
+        <a class="pill" href="mailto:ransu.email@gmail.com" aria-label="email">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>
+          <span class="tooltip">ransu.email@gmail.com</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // --- Snow Generation ---------------------------------------------------
+    const snow = document.getElementById('snow');
+    const FLAKES = 140;
+    for (let i=0;i<FLAKES;i++) {
+      const s = document.createElement('span');
+      s.className = 'flake';
+      const size = Math.random()*3 + 1;
+      s.style.width = size+'px';
+      s.style.height = size+'px';
+      s.style.left = Math.random()*100 + '%';
+      s.style.top = -10 + 'px';
+      const dur = Math.random()*8 + 6;
+      const delay = Math.random()*8;
+      s.style.animation = `fall ${dur}s linear ${delay}s infinite`;
+      snow.appendChild(s);
+    }
+
+    // --- Interactive 3D Hover Effect ---------------------------------------
+    const card = document.getElementById('card');
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = e.clientX - r.left - r.width/2;
+      const y = e.clientY - r.top - r.height/2;
+      card.style.setProperty('--rx', `${Math.max(-15, Math.min(15, -y/10))}deg`);
+      card.style.setProperty('--ry', `${Math.max(-15, Math.min(15, x/10))}deg`);
+      card.style.setProperty('--scale', 1.05);
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--ry', '0deg');
+      card.style.setProperty('--scale', 1);
+    });
+  </script>
+</body>
+</html>
 
