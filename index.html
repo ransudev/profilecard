@@ -141,6 +141,7 @@
       box-shadow: 0 8px 24px rgba(0,0,0,.4); 
       transition: transform .2s ease, background .2s ease, border-color .2s ease; 
       position:relative; 
+      cursor: pointer;
     }
     .pill:hover { 
       transform: scale(1.05); 
@@ -177,7 +178,7 @@
 
   <main class="wrap" id="page">
     <section class="card" id="card" aria-label="Profile card">
-      <div class="top"><span>© 2069</span></div>
+      <div class="top"><span>© 2025</span></div>
 
       <div class="center">
         <div style="position:relative">
@@ -198,7 +199,7 @@
         </a>
         <a class="pill" href="#" aria-label="discord">
           <svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          <span class="tooltip">ransuog</span>
+          <span class="tooltip">Discord: ransuog</span>
         </a>
         <a class="pill" href="https://open.spotify.com/user/31taqdowr6gc3z5psrattdjt24ny?si=b6e88f91158b46c0" target="_blank" rel="noreferrer">
           <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
@@ -208,10 +209,10 @@
             <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1h-2v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
             <span class="tooltip">portfolio</span>
         </a>
-        <a class="pill" href="#" aria-label="wallet">
+        <div class="pill" id="walletBtn" aria-label="wallet">
             <svg class="icon" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-            <span class="tooltip">ltc: LbciSGqkBunLFhpd5EAu9nBdXfGApwYugm</span>
-        </a>
+            <span class="tooltip" id="walletTooltip">ltc: LbciSGqkBunLFhpd5EAu9nBdXfGApwYugm</span>
+        </div>
         <a class="pill" href="mailto:ransu.email@gmail.com" aria-label="email">
           <svg class="icon" viewBox="0 0 24 24"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>
           <span class="tooltip">ransu.email@gmail.com</span>
@@ -253,7 +254,48 @@
       card.style.setProperty('--ry', '0deg');
       card.style.setProperty('--scale', 1);
     });
+
+    // --- Wallet Copy to Clipboard ------------------------------------------
+    const walletBtn = document.getElementById('walletBtn');
+    const walletTooltip = document.getElementById('walletTooltip');
+    const ltcAddress = 'LbciSGqkBunLFhpd5EAu9nBdXfGApwYugm';
+    const originalTooltipText = walletTooltip.textContent;
+
+    walletBtn.addEventListener('click', () => {
+      const textArea = document.createElement('textarea');
+      textArea.value = ltcAddress;
+      
+      // Make the textarea invisible.
+      textArea.style.position = 'fixed';
+      textArea.style.top = 0;
+      textArea.style.left = 0;
+      textArea.style.width = '2em';
+      textArea.style.height = '2em';
+      textArea.style.padding = 0;
+      textArea.style.border = 'none';
+      textArea.style.outline = 'none';
+      textArea.style.boxShadow = 'none';
+      textArea.style.background = 'transparent';
+
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+
+      try {
+        document.execCommand('copy');
+        walletTooltip.textContent = 'Copied!';
+      } catch (err) {
+        walletTooltip.textContent = 'Failed to copy!';
+        console.error('Fallback: Oops, unable to copy', err);
+      }
+
+      document.body.removeChild(textArea);
+
+      // Reset tooltip text after 2 seconds.
+      setTimeout(() => {
+        walletTooltip.textContent = originalTooltipText;
+      }, 2000);
+    });
   </script>
 </body>
 </html>
-
