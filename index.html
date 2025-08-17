@@ -2,31 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ransu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ransu | Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
-    /* Root variables for the black and white theme. */
+    /* Root variables for a modern, cool-toned theme. */
     :root {
-      --bg: #000;
-      --glass: rgba(0,0,0,.6);
-      --border: rgba(255,255,255,.1);
-      --muted: #a1a1aa; /* zinc-400 */
-      --muted-2: #d4d4d8; /* zinc-300 */
-      --white-5: rgba(255,255,255,.05);
-      --white-10: rgba(255,255,255,.1);
-      --white-15: rgba(255,255,255,.15);
-      --white-20: rgba(255,255,255,.2);
-      --pink: #ec4899;
+      --bg-start: #1a1a2e;
+      --bg-end: #16213e;
+      --glass: rgba(255, 255, 255, 0.05);
+      --border: rgba(255, 255, 255, 0.1);
+      --text-primary: #e0e0e0;
+      --text-muted: #a1a1aa;
+      --accent-hover: #537895;
+      --pink-accent: #ec4899;
     }
     
-    /* Basic reset and body styles */
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
+    /* Basic reset and body styles using the Inter font */
+    * { 
+      box-sizing: border-box; 
+    }
+
+    html, body { 
+      height: 100%; 
+    }
+
     body {
       margin: 0; 
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
-      color: #fff; 
-      background: var(--bg); 
+      font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text-primary); 
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
       overflow: hidden;
     }
     
@@ -37,161 +45,194 @@
       place-items: center; 
       padding: 24px; 
       position: relative; 
-      perspective: 1000px; 
+      perspective: 1200px;
     }
 
     /* Snow animation keyframes and container styles */
     @keyframes fall { 
-      0%{ transform: translateY(-10px); } 
-      100%{ transform: translateY(110vh);} 
+      0% { transform: translateY(-20px) translateX(5px); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translateY(105vh) translateX(-5px); opacity: 1; } 
     }
+
     .snow { 
       position: absolute; 
       inset: 0; 
       pointer-events: none; 
       overflow: hidden; 
     }
+
     .flake { 
       position: absolute; 
-      background: #fff; /* White flakes */
-      border-radius: 999px; 
-      opacity: .9; 
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%; 
+      opacity: 0; 
     }
 
-    /* Main card styles with 3D transform properties */
+    /* Main card styles with a wider, rounded shape */
     .card {
-      width: min(720px, 92vw);
+      width: min(560px, 95vw); /* Increased width for a more rectangular shape */
       background: var(--glass);
       border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 24px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 0 25px -5px rgba(255,255,255,.2);
+      border-radius: 24px; 
+      padding: 32px;
+      backdrop-filter: blur(16px) saturate(1.2);
+      box-shadow: 0 10px 30px -10px rgba(0,0,0,.3);
       transform-style: preserve-3d;
       transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--scale,1));
-      transition: transform .2s ease;
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     }
-    
+
     /* Top section of the card */
     .top { 
       display:flex; 
-      justify-content: space-between; 
-      color: var(--muted-2); 
+      justify-content: flex-start; /* Aligned to the left */
+      color: var(--text-muted); 
       font-size: 14px; 
+      font-weight: 500;
     }
     
     /* Profile section styles */
     .avatar { 
-      width: 96px; 
-      height: 96px; 
-      border-radius: 999px; 
+      width: 100px; 
+      height: 100px; 
+      border-radius: 50%; 
       object-fit: cover; 
-      border: 4px solid var(--border); 
-      box-shadow: 0 10px 20px rgba(0,0,0,.4); 
+      border: 2px solid var(--border); 
+      box-shadow: 0 10px 20px rgba(0,0,0,.2); 
     }
+
     .badge { 
       position:absolute; 
-      right:-6px; 
-      bottom:-6px; 
-      width: 20px; 
-      height:20px; 
-      border-radius:999px; 
+      right:-4px; 
+      bottom: 4px; 
+      width: 24px; 
+      height:24px; 
+      border-radius:50%; 
       display:grid;
       place-items:center; 
-      background:var(--pink); 
+      background:var(--pink-accent); 
       color:#fff; 
-      font-size:10px; 
-      box-shadow: 0 6px 16px rgba(236,72,153,.6); 
+      border: 2px solid var(--bg-start);
+      box-shadow: 0 6px 16px rgba(236,72,153,.5); 
     }
+
     .center { 
-      display:grid; 
-      place-items:center; 
-      gap: 8px; 
-      margin-top: 20px; 
+      display:flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px; 
+      margin-top: 24px;
       text-align: center;
     }
+
     .name { 
-      font-weight:800; 
-      letter-spacing:.5px; 
-      font-size: 32px; 
-      text-transform: lowercase; 
+      font-weight: 800; 
+      letter-spacing: -0.5px; 
+      font-size: 36px; 
+      text-transform: lowercase;
+      background: linear-gradient(90deg, #e0e0e0, #b0b0b0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
+
     .muted { 
-      color: var(--muted); 
-      font-size: 14px; 
+      color: var(--text-muted); 
+      font-size: 15px; 
+      font-weight: 500;
       margin-top: 4px;
     }
 
     /* Social links row */
     .links { 
       display:flex; 
-      gap:16px; 
-      justify-content:center; 
-      margin: 20px auto; 
-      max-width: 520px; 
+      gap: 16px; 
+      justify-content: center; 
+      margin: 24px auto; 
+      max-width: 100%;
+      flex-wrap: wrap;
     }
+
     .pill { 
-      width:48px; 
-      height:48px; 
-      display:grid; 
-      place-items:center; 
-      border-radius:999px; 
-      border:1px solid var(--border); 
-      background: var(--white-5); 
-      box-shadow: 0 8px 24px rgba(0,0,0,.4); 
-      transition: transform .2s ease, background .2s ease, border-color .2s ease; 
-      position:relative; 
-      cursor: pointer;
+      width: 52px; 
+      height: 52px; 
+      display: grid; 
+      place-items: center; 
+      border-radius: 50%; 
+      border: 1px solid transparent; 
+      background: rgba(255, 255, 255, 0.08); 
+      box-shadow: 0 8px 24px rgba(0,0,0,.2); 
+      transition: transform .3s ease, background .3s ease, border-color .3s ease; 
+      position: relative; 
     }
+
     .pill:hover { 
-      transform: scale(1.05); 
-      background: var(--white-10); 
-      border-color: var(--white-20); 
+      transform: scale(1.1) translateY(-2px); 
+      background: var(--accent-hover); 
+      border-color: rgba(255, 255, 255, 0.2); 
     }
-    .tooltip { 
-      position:absolute; 
-      bottom:100%; 
-      transform-origin: bottom; 
-      transform: scale(0); 
-      transition: transform .15s ease; 
-      background: rgba(255,255,255,.9); 
-      color: #000;
-      padding:6px 8px; 
-      border-radius:6px; 
-      font-size:12px; 
-      white-space:nowrap; 
-      margin-bottom:8px; 
-    }
-    .pill:hover .tooltip { transform: scale(1); }
     
-    /* Basic icon style */
+    .pill:hover .icon {
+      color: white;
+    }
+
+    .tooltip { 
+      position: absolute; 
+      bottom: 110%; 
+      transform-origin: bottom; 
+      transform: scale(0.8); 
+      opacity: 0;
+      transition: transform .2s ease, opacity .2s ease; 
+      background: #000; 
+      color: #fff;
+      padding: 6px 10px; 
+      border-radius: 8px; 
+      font-size: 12px; 
+      font-weight: 500;
+      white-space: nowrap; 
+      pointer-events: none;
+    }
+
+    .pill:hover .tooltip { 
+      transform: scale(1); 
+      opacity: 1;
+    }
+    
+    /* Icon style */
     .icon { 
-      width:24px; 
-      height:24px; 
-      fill: currentColor; 
-      color: var(--muted-2); 
+      width: 24px; 
+      height: 24px; 
+      fill: currentColor;
+      color: var(--text-muted); 
+      transition: color 0.3s ease;
     }
   </style>
 </head>
 <body>
+  <!-- Snow Container -->
   <div class="snow" id="snow"></div>
 
   <main class="wrap" id="page">
     <section class="card" id="card" aria-label="Profile card">
-      <div class="top"><span>© 2025</span></div>
+      <!-- Header -->
+      <div class="top">
+        <span>© 2025</span>
+      </div>
 
+      <!-- Profile Info -->
       <div class="center">
         <div style="position:relative">
-          <img class="avatar" src="profile.png" alt="avatar" />
+          <img class="avatar" src="profile.png" alt="avatar" onerror="this.onerror=null;this.src='https://placehold.co/100x100/1a1a2e/e0e0e0?text=R';"/>
           <span class="badge">
-             <svg class="icon" style="width:12px; height:12px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+            <svg class="icon" style="width:12px; height:12px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
           </span>
         </div>
         <div class="name">ransu</div>
         <div class="muted">he/him</div>
         <div class="muted">2006</div>
       </div>
-
+      
+      <!-- Social Links -->
       <div class="links">
         <a class="pill" href="https://steamcommunity.com/profiles/76561198302918958/" target="_blank" rel="noreferrer">
           <svg class="icon" viewBox="0 0 24 24"><path d="M15 7.5V2H9v5.5l3 3 3-3zM7.5 9H2v6h5.5l3-3-3-3zm9 0l-3 3 3 3H22V9h-5.5zM12 13.5l-3 3H9v5.5h6V16.5l-3-3z"/></svg>
@@ -199,20 +240,20 @@
         </a>
         <a class="pill" href="#" aria-label="discord">
           <svg class="icon" viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          <span class="tooltip">Discord: ransuog</span>
+          <span class="tooltip">ransuog</span>
         </a>
         <a class="pill" href="https://open.spotify.com/user/31taqdowr6gc3z5psrattdjt24ny?si=b6e88f91158b46c0" target="_blank" rel="noreferrer">
           <svg class="icon" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
           <span class="tooltip">spotify</span>
         </a>
         <a class="pill" href="https://ransudev.github.io/portfolio/#home" aria-label="portfolio">
-            <svg class="icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1h-2v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+            <svg class="icon" viewBox="0 0 24 24"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg>
             <span class="tooltip">portfolio</span>
         </a>
-        <div class="pill" id="walletBtn" aria-label="wallet">
+        <a class="pill" href="#" aria-label="wallet">
             <svg class="icon" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-            <span class="tooltip" id="walletTooltip">ltc: LbciSGqkBunLFhpd5EAu9nBdXfGApwYugm</span>
-        </div>
+            <span class="tooltip">ltc: LbciSGqkBunLFhpd5EAu9nBdXfGApwYugm</span>
+        </a>
         <a class="pill" href="mailto:ransu.email@gmail.com" aria-label="email">
           <svg class="icon" viewBox="0 0 24 24"><path d="M22 6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6zm-2 0l-8 5-8-5h16zm0 12H4V8l8 5 8-5v10z"/></svg>
           <span class="tooltip">ransu.email@gmail.com</span>
@@ -222,79 +263,65 @@
   </main>
 
   <script>
-    // --- Snow Generation ---------------------------------------------------
-    const snow = document.getElementById('snow');
-    const FLAKES = 140;
-    for (let i=0;i<FLAKES;i++) {
-      const s = document.createElement('span');
-      s.className = 'flake';
-      const size = Math.random()*3 + 1;
-      s.style.width = size+'px';
-      s.style.height = size+'px';
-      s.style.left = Math.random()*100 + '%';
-      s.style.top = -10 + 'px';
-      const dur = Math.random()*8 + 6;
-      const delay = Math.random()*8;
-      s.style.animation = `fall ${dur}s linear ${delay}s infinite`;
-      snow.appendChild(s);
+    // --- Snow Generation ---
+    // This function creates a specified number of snowflake elements and adds them to the DOM.
+    function createSnow() {
+      const snowContainer = document.getElementById('snow');
+      if (!snowContainer) return;
+      const FLAKE_COUNT = 100;
+      for (let i = 0; i < FLAKE_COUNT; i++) {
+        const flake = document.createElement('span');
+        flake.className = 'flake';
+        
+        const size = Math.random() * 2.5 + 1;
+        flake.style.width = `${size}px`;
+        flake.style.height = `${size}px`;
+        
+        flake.style.left = `${Math.random() * 100}%`;
+        flake.style.top = `${-10}px`;
+        
+        const duration = Math.random() * 10 + 8;
+        const delay = Math.random() * 10;
+        
+        flake.style.animation = `fall ${duration}s linear ${delay}s infinite`;
+        
+        snowContainer.appendChild(flake);
+      }
+    }
+    
+    // --- Interactive 3D Hover Effect ---
+    // This function adds mouse move and leave listeners to the card for the 3D tilt effect.
+    function setup3dHover() {
+      const card = document.getElementById('card');
+      if (!card) return;
+
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        const rotateX = -y / 25; 
+        const rotateY = x / 25;
+        
+        const clampedRotateX = Math.max(-10, Math.min(10, rotateX));
+        const clampedRotateY = Math.max(-10, Math.min(10, rotateY));
+
+        card.style.setProperty('--rx', `${clampedRotateX}deg`);
+        card.style.setProperty('--ry', `${clampedRotateY}deg`);
+        card.style.setProperty('--scale', 1.05);
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+        card.style.setProperty('--scale', 1);
+      });
     }
 
-    // --- Interactive 3D Hover Effect ---------------------------------------
-    const card = document.getElementById('card');
-    card.addEventListener('mousemove', (e) => {
-      const r = card.getBoundingClientRect();
-      const x = e.clientX - r.left - r.width/2;
-      const y = e.clientY - r.top - r.height/2;
-      card.style.setProperty('--rx', `${Math.max(-15, Math.min(15, -y/10))}deg`);
-      card.style.setProperty('--ry', `${Math.max(-15, Math.min(15, x/10))}deg`);
-      card.style.setProperty('--scale', 1.05);
-    });
-    card.addEventListener('mouseleave', () => {
-      card.style.setProperty('--rx', '0deg');
-      card.style.setProperty('--ry', '0deg');
-      card.style.setProperty('--scale', 1);
-    });
-
-    // --- Wallet Copy to Clipboard ------------------------------------------
-    const walletBtn = document.getElementById('walletBtn');
-    const walletTooltip = document.getElementById('walletTooltip');
-    const ltcAddress = 'LbciSGqkBunLFhpd5EAu9nBdXfGApwYugm';
-    const originalTooltipText = walletTooltip.textContent;
-
-    walletBtn.addEventListener('click', () => {
-      const textArea = document.createElement('textarea');
-      textArea.value = ltcAddress;
-      
-      // Make the textarea invisible.
-      textArea.style.position = 'fixed';
-      textArea.style.top = 0;
-      textArea.style.left = 0;
-      textArea.style.width = '2em';
-      textArea.style.height = '2em';
-      textArea.style.padding = 0;
-      textArea.style.border = 'none';
-      textArea.style.outline = 'none';
-      textArea.style.boxShadow = 'none';
-      textArea.style.background = 'transparent';
-
-      document.body.appendChild(textArea);
-      textArea.focus();
-      textArea.select();
-
-      try {
-        document.execCommand('copy');
-        walletTooltip.textContent = 'Copied!';
-      } catch (err) {
-        walletTooltip.textContent = 'Failed to copy!';
-        console.error('Fallback: Oops, unable to copy', err);
-      }
-
-      document.body.removeChild(textArea);
-
-      // Reset tooltip text after 2 seconds.
-      setTimeout(() => {
-        walletTooltip.textContent = originalTooltipText;
-      }, 2000);
+    // Initialize scripts once the DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', () => {
+      createSnow();
+      setup3dHover();
     });
   </script>
 </body>
